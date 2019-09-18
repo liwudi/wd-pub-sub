@@ -10,34 +10,30 @@ function PubSub() {
     }
 }
 PubSub.prototype.subscribe = function (eventName, callback) {
-    let EventsList = [];
     if (arguments.length < 2) {
         throw new TypeError('arguments error');
     }
     if (Reflect.has(this.handles, eventName)) {
-        EventsList = this.handles[eventName].eventsList;
+        this.handles[eventName].eventsList.push(callback);
     } else {
         this.handles[eventName] = {
             eventsList: [callback],
             isOne: false,
         };
     }
-    EventsList.push(callback);
 }
 PubSub.prototype.subscribeOne = function (eventName, callback) {
-    let EventsList = [];
     if (arguments.length < 2) {
         throw new TypeError('arguments error');
     }
     if (Reflect.has(this.handles, eventName)) {
-        EventsList = this.handles[eventName].eventsList;
+        this.handles[eventName].eventsList.push(callback);
     } else {
         this.handles[eventName] = {
             eventsList: [callback],
             isOne: true,
         };
     }
-    EventsList.push(callback);
 }
 PubSub.prototype.notify = function (eventName, ...rest) {
     if (this.handles[eventName]) {
